@@ -18,6 +18,7 @@ export interface ISelectSiteListControlState {
     siteTitle: string;
     isLoading: boolean;
     siteList: ISiteModel[];
+    searchSiteList: ISiteModel[];
     loadingSuccess: boolean;
 }       
 
@@ -29,6 +30,7 @@ export default class SelectSiteListControl extends React.Component<ISelectSiteLi
             siteTitle: '',
             isLoading: false,
             siteList: this.props.selectedSitesProperties || [],
+            searchSiteList: [],
             loadingSuccess: true
         };
         this.loadSites = debounce(this.loadSites, 1000); 
@@ -46,10 +48,10 @@ export default class SelectSiteListControl extends React.Component<ISelectSiteLi
                     <SpinnerLoader />
                 :
                     !this.state.siteTitle ?
-                        <SiteListGroup siteList={this.state.siteList.filter(u => u.Selected)}  onPropCheckedSite={this.checkedSite.bind(this)} />
+                        <SiteListGroup siteList={this.state.siteList}  onPropCheckedSite={this.checkedSite.bind(this)} />
                     :
                         this.state.loadingSuccess ?
-                            <SiteListsControl siteList={this.state.siteList} onPropCheckedSite={this.checkedSite.bind(this)} />
+                            <SiteListsControl siteList={this.state.searchSiteList} onPropCheckedSite={this.checkedSite.bind(this)} />
                         : <span>{strings.PropertyPaneSitesNotFound}</span>
             }
             
@@ -59,13 +61,24 @@ export default class SelectSiteListControl extends React.Component<ISelectSiteLi
 
     private checkedSite(webId: string) {
         let listToUpdate = this.state.siteList;
-        let itemToUpdate = listToUpdate.filter(u => u.WebId === webId);
+        let itemToUpdate = this.state.siteList.filter(u => u.WebId === webId);
+
+        //If item exist
         if(itemToUpdate.length > 0) {
-            itemToUpdate[0].Selected = !itemToUpdate[0].Selected;
+            itemToUpdate[0].Selected = !itemToUpdate[0].Selected;                
+            //We update the search list
+            let itemToAdd : ISiteModel = this.state.searchSiteList.filter(u => u.WebId === webId)[0];
+            itemToAdd.Selected = false;
+        }
+        //If not we add to current list
+        else{
+            let itemToAdd : ISiteModel = this.state.searchSiteList.filter(u => u.WebId === webId)[0];
+            itemToAdd.Selected = true;
+            listToUpdate = listToUpdate.concat(itemToAdd);
         }
 
-        this.setState({ siteList: listToUpdate }, () => {
-            this.props.onSelectedSiteChange(this.state.siteList.filter(u => u.Selected));
+        this.setState({ siteList: listToUpdate.filter(u => u.Selected)}, () => {
+            this.props.onSelectedSiteChange(this.state.siteList);
         });
     }
     private loadSites (siteTitle: string) {
@@ -76,21 +89,15 @@ export default class SelectSiteListControl extends React.Component<ISelectSiteLi
                 this.setState({ isLoading: false, loadingSuccess: false }); 
             }
             else if(this.state.siteList.length === 0)
-                this.setState({ siteList: sites, isLoading: false, loadingSuccess: true }); 
+                this.setState({ searchSiteList: sites, isLoading: false, loadingSuccess: true }); 
             else {
-                let selectedSite : ISiteModel[] = this.state.siteList.filter(u => u.Selected);
-                let nbSiteToGet = dataService.rowLimit - selectedSite.length;
+                let selectedSite = sites.map((site:ISiteModel) => {
+                    if(this.state.siteList.filter(u => u.WebId == site.WebId).length > 0) 
+                        site.Selected = true;
+                    return site; 
+                });
 
-                if(nbSiteToGet > 0) {
-                    let siteToConcat = sites.filter((site, index) => {
-                        if(index < nbSiteToGet-1 && selectedSite.filter(u => u.WebId === site.WebId).length === 0)
-                            return true;
-                        else
-                            return false;
-                    });
-                    selectedSite = selectedSite.concat(siteToConcat);
-                }
-                this.setState({ siteList: selectedSite, isLoading: false, loadingSuccess: true });
+                this.setState({ searchSiteList: selectedSite, isLoading: false, loadingSuccess: true });
             }
         }));
     }

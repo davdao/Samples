@@ -25,7 +25,7 @@ export default class SiteListGroup extends React.Component<ISiteListGroupProps, 
     public render(): React.ReactElement<ISiteListGroupProps> {
         return(<div>
                     <div>
-                        <button className={styles.sectionHeader} onClick={() =>         this.setState({ selectedSiteClicked: !this.state.selectedSiteClicked })}>
+                        <button className={styles.sectionHeader} onClick={() => this.setState({ selectedSiteClicked: !this.state.selectedSiteClicked })}>
                             <i className={styles.sectionIcon + ' ms-Icon ms-Icon--ChevronRight ' + (!this.state.selectedSiteClicked ? styles.sectionIconClicked : styles.sectionIconUnClicked)}></i>
                             <label className={styles.sectionLabel}>{this.props.siteList.length + " " + strings.PropertyPaneSelectedSite}</label>
                         </button>
