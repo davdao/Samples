@@ -1,0 +1,60 @@
+$themePrimaryColor: "[theme: themePrimary, default: #a70446]";
+$themeLighterAltColor: "[theme: themeLighterAlt, default: #ffeef5]";
+
+.checkBoxItem {
+    display: flex;
+    margin-bottom:10px;
+    cursor: pointer;
+  
+    .checkBoxDiv {
+      display: flex;
+  
+      .chkBox {
+        position: relative;
+        margin:auto 10px auto auto;
+      }
+      .chkBox:after {
+        display: block;
+        content: "";
+        width: 20px;
+        height: 20px;
+        background: $themeLighterAltColor;
+        position: absolute;
+        top: -5px;
+        right: 0;
+        border: 10px solid #ddd;
+        box-sizing: border-box;
+        transition: border 200ms ease-in-out, background 400ms ease-in-out;
+      }
+      
+      .chkBox:checked:after {
+        border: 5px solid #ddd;
+        background: $themePrimaryColor;
+      }
+    }
+    
+    .bannerImage {
+      width: 28px;
+      height: 28px;
+      -webkit-box-flex: 8;
+      flex: 0 0 28px;
+      font-size: 14px;
+      color:white;
+      display: flex;
+      align-items: center;
+      -webkit-box-align: center;
+      justify-content: center;
+      background-color: #FFFFFF;
+      background-position: 50%;
+      background-repeat:no-repeat;
+      background-size:contain;
+    }
+    .bannerTitle{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+      color: #53565a;
+      margin: auto 0 auto 5px;
+    }
+  }

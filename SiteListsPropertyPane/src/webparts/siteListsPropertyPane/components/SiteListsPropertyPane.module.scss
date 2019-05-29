@@ -1,0 +1,59 @@
+$themePrimaryColor: "[theme: themePrimary, default: #a70446]";
+
+.searchbox {
+	width: 100%;
+	border: 1px solid #ccc;
+  outline: 0;
+  padding: 6px;
+}
+.searchbox:focus {
+	border: 1px solid $themePrimaryColor;
+}
+
+.sectionHeader {
+  background: 0 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  height: 40px;
+  display: flex;
+
+  .sectionIcon {
+    margin-top: 3px;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    font-style: normal;
+    font-weight: normal;
+    font-family: FabricMDL2Icons;
+  }
+
+  .sectionIconClicked{
+    transform: rotate(90deg);
+    -moz-transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+  }
+  .sectionIconUnClicked{
+    -moz-transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+  }
+
+  .sectionLabel {
+    margin: auto 0 auto 10px;
+    text-align: left;
+    cursor: pointer;
+    font-size:14px;
+    font-weight: 600;
+    color:#53565a;
+  }
+}
+
+.spinnerContainer{
+  margin: 25px;
+}
+.siteList {
+  margin:20px 0 0 10px;
+}
