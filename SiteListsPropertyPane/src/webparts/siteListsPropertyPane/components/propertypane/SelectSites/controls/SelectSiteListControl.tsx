@@ -4,7 +4,7 @@ import { DataServices } from '../../../../common/DataServices';
 import SiteListsControl  from './SiteListsControl';
 import SiteListGroup from './SiteListGroup';
 import { ISiteModel } from '../../../../common/SiteModel';
-import SpinnerLoader from './SpinnerLoader';
+import SpinnerLoader from '../../../../common/htmlControl/SpinnerLoader';
 import styles from '../../../SiteListsPropertyPane.module.scss';
 import { debounce } from '@microsoft/sp-lodash-subset';
 
@@ -59,20 +59,22 @@ export default class SelectSiteListControl extends React.Component<ISelectSiteLi
             </div>);
     }
 
-    private checkedSite(webId: string) {
+    private checkedSite(path: string) {
         let listToUpdate = this.state.siteList;
-        let itemToUpdate = this.state.siteList.filter(u => u.WebId === webId);
+        let itemToUpdate = this.state.siteList.filter(u => u.Path === path);
 
         //If item exist
         if(itemToUpdate.length > 0) {
             itemToUpdate[0].Selected = !itemToUpdate[0].Selected;                
             //We update the search list
-            let itemToAdd : ISiteModel = this.state.searchSiteList.filter(u => u.WebId === webId)[0];
-            itemToAdd.Selected = false;
+            let itemToAdd : ISiteModel = this.state.searchSiteList.filter(u => u.Path === path)[0];
+
+            if(itemToAdd)
+                itemToAdd.Selected = false;
         }
         //If not we add to current list
         else{
-            let itemToAdd : ISiteModel = this.state.searchSiteList.filter(u => u.WebId === webId)[0];
+            let itemToAdd : ISiteModel = this.state.searchSiteList.filter(u => u.Path === path)[0];
             itemToAdd.Selected = true;
             listToUpdate = listToUpdate.concat(itemToAdd);
         }
@@ -92,7 +94,7 @@ export default class SelectSiteListControl extends React.Component<ISelectSiteLi
                 this.setState({ searchSiteList: sites, isLoading: false, loadingSuccess: true }); 
             else {
                 let selectedSite = sites.map((site:ISiteModel) => {
-                    if(this.state.siteList.filter(u => u.WebId == site.WebId).length > 0) 
+                    if(this.state.siteList.filter(u => u.Path == site.Path).length > 0) 
                         site.Selected = true;
                     return site; 
                 });

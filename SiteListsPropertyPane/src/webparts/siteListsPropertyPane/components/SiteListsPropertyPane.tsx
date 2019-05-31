@@ -27,7 +27,7 @@ export default class SiteListsPropertyPane extends React.Component<ISiteListsPro
                         return(<div><div>{'Request for selected sites : '}</div><div>
                             {
                                 this.props.selectedSitesProperties.map((site) => {
-                                    return(<div>{"selected sites : " + site.Title + " " + site.WebId}</div>);
+                                    return(<div>{"selected sites : " + site.Title + " " + site.Path}</div>);
                                 })
                             }
                             </div></div>);

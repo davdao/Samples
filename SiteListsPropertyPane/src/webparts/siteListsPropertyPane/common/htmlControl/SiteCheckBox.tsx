@@ -15,7 +15,7 @@ export default class SiteCheckBox extends React.Component<ISiteCheckBoxProps, {}
 
     public render(): React.ReactElement<ISiteCheckBoxProps> {
         return(
-            <div className={styles.checkBoxItem} onClick={() => {this.props.onCheckedSite(this.props.site.WebId); } }>
+            <div className={styles.checkBoxItem} onClick={() => {this.props.onCheckedSite(this.props.site.Path); } }>
                 <div className={styles.checkBoxDiv}>
                     <input type="checkbox" className={styles.chkBox} checked={this.props.site.Selected} />
                 </div>
